@@ -4,6 +4,7 @@ import threading
 import time
 from datetime import datetime
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 
 your_name = "Li, XXX XXX"
 bidding_time = "2021-11-24 16:59:52.000"
@@ -22,7 +23,7 @@ def bid(strURL):
     browser.get("https://cnnkg04003.ad001.siemens.net:83/AOS/")
     browser.get(strURL)
 
-    high_price_by_name = browser.find_element_by_id("gvBiddingRecords_ctl02_lblBidderName")
+    high_price_by_name = browser.find_element(By.ID, 'gvBiddingRecords_ctl02_lblBidderName')
     if(high_price_by_name.text == your_name):
         print("You have already bought it!")
         browser.quit
@@ -30,12 +31,12 @@ def bid(strURL):
     else:
         print("Current hold by", high_price_by_name.text)
     
-    price = browser.find_element_by_id("lblAICurrentPrice")
+    price = browser.find_element(By.ID,"lblAICurrentPrice")
     if float(price.text) < reasonable_price :
         print("Price OK, just buy it... at ", float(price.text) + 50.0)
-        browser.find_element_by_id("tbAIAmount").send_keys("1")
-        browser.find_element_by_id("tbBidPrice").send_keys(str(float(price.text) + 50.0))
-        browser.find_element_by_id("iBtnBid").click()
+        browser.find_element(By.ID, "tbAIAmount").send_keys("1")
+        browser.find_element(By.ID, "tbBidPrice").send_keys(str(float(price.text) + 50.0))
+        browser.find_element(By.ID, "iBtnBid").click()
     else:
         print("It is too expensive, do not buy it at", price.text)
         
